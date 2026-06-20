@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # 1. DATABASE MYSQL
+  db_mysql:
+    image: mysql:8.0
+    container_name: se2026_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password_rahasia_anda  # Ubah ini
+      MYSQL_DATABASE: se2026_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # 2. BACKEND API (FASTAPI)
+  api_backend:
+    build: ./be-dashboard-se2026
+    container_name: se2026_api
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_mysql
+    env_file:
+      - ./be-dashboard-se2026/.env
+
+  # 3. ADMIN PANEL (STREAMLIT)
+  admin_panel:
+    build: ./be-dashboard-se2026
+    container_name: se2026_admin
+    command: streamlit run admin_panel.py --server.port 8501 --server.address 0.0.0.0
+    restart: always
+    ports:
+      - "8501:8501"
+    depends_on:
+      - db_mysql
+      - api_backend
+    env_file:
+      - ./be-dashboard-se2026/.env
+
+  # 4. FRONTEND LAYAR TV (REACT + NGINX)
+  frontend_web:
+    build: ./fe-dashboard-se2026
+    container_name: se2026_frontend
+    restart: always
+    ports:
+      - "8080:80" 
+    # Frontend akan menyala di port 8080 server Ubuntu Anda
+
+volumes:
+  mysql_data:

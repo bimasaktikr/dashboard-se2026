@@ -1,0 +1,21 @@
+# ========================
+# FRONTEND (REACT/NODE)
+# ========================
+fe-dashboard-se2026/node_modules/
+fe-dashboard-se2026/dist/
+fe-dashboard-se2026/.env
+
+# ========================
+# BACKEND (PYTHON)
+# ========================
+be-dashboard-se2026/venv/
+be-dashboard-se2026/__pycache__/
+be-dashboard-se2026/*.pyc
+be-dashboard-se2026/.env
+
+# ========================
+# OS & DOCKER FILES
+# ========================
+.DS_Store
+Thumbs.db
+.dockerignore
